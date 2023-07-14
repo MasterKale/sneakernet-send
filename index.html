@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        background: #282c34;
+        color: #bbbbbb;
+        font-family: "Courier New", Courier, monospace;
+        width: 100%;
+      }
+
+      textarea {
+        background: transparent;
+        color: inherit;
+        width: 100%;
+      }
+
+      #container {
+        max-width: 500px;
+        margin: 0 auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <textarea
+        name="message"
+        id="message"
+        cols="30"
+        rows="10"
+        placeholder="message here"
+      ></textarea>
+      <p>
+        <button id="btnProtect">Protect Message</button>
+        <button id="btnRead">Read Message</button>
+      </p>
+      <h2>Debug Console</h2>
+      <pre><code id="debug"></code></pre>
+    </div>
+    <script>
+      const messageInput = document.getElementById("message");
+      const debugConsole = document.getElementById("debug");
+
+      const rpID = 'localhost';
+
+      // `salt` can be static for your site or unique per credential depending on your needs.
+      // crypto.getRandomValues(new Uint8Array(new Array(32)));
+      const firstSalt = new Uint8Array([
+        0x4a, 0x18, 0xa1, 0xe7, 0x4b, 0xfb, 0x3d, 0x3f, 0x2a, 0x5d, 0x1f, 0x0c,
+        0xcc, 0xe3, 0x96, 0x5e, 0x00, 0x61, 0xd1, 0x20, 0x82, 0xdc, 0x2a, 0x65,
+        0x8a, 0x18, 0x10, 0xc0, 0x0f, 0x26, 0xbe, 0x1e,
+      ]).buffer;
+
+      document
+        .getElementById("btnProtect")
+        .addEventListener("click", protectMessage);
+
+      /**
+       *
+       * Functions
+       *
+       */
+
+      function writeToDebug(text) {
+        debugConsole.append(`\n\[${Date.now()}\]\n${text}`);
+      }
+
+      function getRandomBytes() {
+        const arrayBuffer = new Uint8Array(new Array(16));
+        return crypto.getRandomValues(arrayBuffer);
+      }
+
+      async function protectMessage() {
+        const userID = getRandomBytes();
+        const userName = `Figbar Key (${Date.now()})`;
+
+        writeToDebug(userName);
+
+        const regCredential = await navigator.credentials.create({
+          publicKey: {
+            challenge: getRandomBytes(),
+            rp: {
+              name: 'Project Figbar',
+              id: rpID,
+            },
+            user: {
+              id: userID,
+              name: userName,
+              displayName: userName,
+            },
+            pubKeyCredParams: [
+              { alg: -8, type: 'public-key' }, // Ed25519
+              { alg: -7, type: 'public-key' }, // ES256
+              { alg: -257, type: 'public-key' }, // RS256
+            ],
+            authenticatorSelection: {
+              userVerification: 'required',
+              residentKey: 'required',
+            },
+            extensions: {
+              prf: { eval: { first: firstSalt } },
+            },
+          },
+        });
+
+        const regExtResults = regCredential.getClientExtensionResults();
+
+        // reg: {"prf":{"":true}}
+        writeToDebug(`reg: ${JSON.stringify(regExtResults)}`);
+
+        if (!regExtResults.prf || !regExtResults.prf.enabled) {
+          const message = 'This authenticator cannot be used with PRF';
+          alert(message);
+          throw Error('This authenticator cannot be used with PRF');
+        }
+
+        const authCredential = await navigator.credentials.get({
+          publicKey: {
+            challenge: getRandomBytes(),
+            rpId: "localhost",
+            userVerification: "required",
+            extensions: {
+              prf: { eval: { first: firstSalt } },
+            },
+          },
+        });
+
+        const authExtResults =
+          authCredential.getClientExtensionResults();
+        writeToDebug(`result: ${JSON.stringify(authExtResults)}`);
+      }
+    </script>
+  </body>
+</html>
