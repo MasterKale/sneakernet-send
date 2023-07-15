@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Project Figbar</title>
     <style>
       body {
         margin: 0;
@@ -11,13 +11,19 @@
         background: #282c34;
         color: #bbbbbb;
         font-family: "Courier New", Courier, monospace;
-        width: 100%;
+        width: 100vw;
+        padding: 16px;
+        box-sizing: border-box;
       }
 
       textarea {
         background: transparent;
         color: inherit;
         width: 100%;
+      }
+
+      button {
+        padding: 8px;
       }
 
       #container {
@@ -32,24 +38,32 @@
   </head>
   <body>
     <div id="container">
-      <p>
-        <button id="btnPrepare">Prepare Key</button>
-      </p>
-      <textarea
-        name="message"
-        id="message"
-        cols="30"
-        rows="10"
-        placeholder="message here"
-      ></textarea>
-      <p>
-        <button id="btnProtect">Protect Message</button>
-        <button id="btnRead">Read Message</button>
-
-      </p>
-      <h2>Debug Console</h2>
-      <!-- <pre><code id="debug"></code></pre> -->
-      <p id="debug"></p>
+      <h1>Project Figbar</h1>
+      <!-- Protect / Read Message -->
+      <section>
+        <textarea
+          name="message"
+          id="message"
+          cols="30"
+          rows="15"
+          placeholder="Enter text that you want to protect, or protected text that you want to read"
+        ></textarea>
+        <p>
+          <button id="btnProtect">Protect Message</button>
+          <button id="btnRead">Read Message</button>
+        </p>
+      </section>
+      <!-- Set up authenticator to protect -->
+      <section>
+        <h2>First time here?</h2>
+        <p>
+          <button id="btnPrepare">Prepare Key</button>
+        </p>
+      </section>
+      <section>
+        <h2>Debug Console</h2>
+        <p id="debug"></p>
+      </section>
     </div>
     <script src="./helpers.js"></script>
     <script src="./script.js"></script>
