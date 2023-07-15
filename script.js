@@ -151,34 +151,45 @@ async function handleProtectMessage() {
     throw Error(message);
   }
 
-  const inputKeyMaterial = new Uint8Array(extResults.prf.results.first);
-  const encryptionKey = await deriveEncryptionKey(inputKeyMaterial);
 
-  // Keep track of this `nonce`, you'll need it to decrypt later!
-  // FYI it's not a secret so you don't have to protect it.
-  const nonce = crypto.getRandomValues(new Uint8Array(12));
+  try {
+    const inputKeyMaterial = new Uint8Array(extResults.prf.results.first);
+    const encryptionKey = await deriveEncryptionKey(inputKeyMaterial);
 
-  const data = elemMessage.value ?? '';
-  const encrypted = await crypto.subtle.encrypt(
-    { name: 'AES-GCM', iv: nonce },
-    encryptionKey,
-    textEncoder.encode(data),
-  );
+    // Keep track of this `nonce`, you'll need it to decrypt later!
+    // FYI it's not a secret so you don't have to protect it.
+    const nonce = crypto.getRandomValues(new Uint8Array(12));
 
-  const b64urlEncrypted = bufferToBase64URLString(encrypted);
-  const b64urlNonce = bufferToBase64URLString(nonce);
-  const b64urlCredentialID = authCredential.id;
+    const data = elemMessage.value ?? '';
+    const encrypted = await crypto.subtle.encrypt(
+      { name: 'AES-GCM', iv: nonce },
+      encryptionKey,
+      textEncoder.encode(data),
+    );
 
-  const toReturn = `${b64urlEncrypted}:${b64urlNonce}:${b64urlCredentialID}`;
+    const b64urlEncrypted = bufferToBase64URLString(encrypted);
+    const b64urlNonce = bufferToBase64URLString(nonce);
+    const b64urlCredentialID = authCredential.id;
 
-  writeToDebug(toReturn);
+    const toReturn = `${b64urlEncrypted}:${b64urlNonce}:${b64urlCredentialID}`;
+
+    writeToDebug(`Protected Message: ${toReturn}`);
+  } catch (err) {
+    console.error(err);
+    writeToDebug(err);
+  }
 }
 
+/**
+ * Decrypt a protected message using a prepared security key
+ */
 async function handleReadMessage() {
   const message = elemMessage.value ?? '';
 
   const messageParts = message.split(':');
 
+  // TODO: Allow for credential ID to be omitted at the end to make it tougher to find the
+  // authenticator that can decrypt a message?
   if (messageParts.length < 2) {
     const message = 'The protected message is not in the expected format';
     writeToDebug(message);
@@ -190,12 +201,6 @@ async function handleReadMessage() {
     b64urlNonce,
     credentialID,
   ] = messageParts;
-
-  console.log({
-    b64urlEncrypted,
-    b64urlNonce,
-    credentialID,
-  });
 
   const authOptions = {
     publicKey: {
@@ -228,10 +233,11 @@ async function handleReadMessage() {
     throw Error(message);
   }
 
-  const inputKeyMaterial = new Uint8Array(extResults.prf.results.first);
-  const encryptionKey = await deriveEncryptionKey(inputKeyMaterial);
-
   try {
+    // Prepare to decrypt
+    const inputKeyMaterial = new Uint8Array(extResults.prf.results.first);
+    const encryptionKey = await deriveEncryptionKey(inputKeyMaterial);
+
     const decrypted = await crypto.subtle.decrypt(
       { name: "AES-GCM", iv: base64URLStringToBuffer(b64urlNonce) },
       encryptionKey,
