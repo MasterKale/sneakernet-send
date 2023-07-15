@@ -28,7 +28,7 @@ document.getElementById('btnProtect').addEventListener('click', handleProtectMes
  * @param {string} text
  */
 function writeToDebug(text) {
-  elemDebugConsole.append(`\n\[${Date.now()}\] ${text}`);
+  elemDebugConsole.innerHTML = elemDebugConsole.innerHTML + `<br>\[${Date.now()}\] ${text}`;
 }
 
 /**
