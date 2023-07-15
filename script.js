@@ -45,7 +45,7 @@ function getRandomBytes(length = 16) {
  * Create a symmetric encryption key from the provided bytes
  *
  * @param {Uint8Array} inputKeyMaterial
- * @returns {CryptoKey}
+ * @returns {Promise<CryptoKey>}
  */
 async function deriveEncryptionKey(inputKeyMaterial) {
   const keyDerivationKey = await crypto.subtle.importKey(
