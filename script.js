@@ -81,6 +81,10 @@ async function deriveEncryptionKey(inputKeyMaterial) {
 /**
  * Click handlers
  */
+
+/**
+ * Set up a security key to use the `prf` extension to protect messages
+ */
 async function handlePrepareKey() {
   const userID = getRandomBytes();
   const userName = `Figbar Key (${Date.now()})`;
@@ -128,6 +132,9 @@ async function handlePrepareKey() {
   writeToDebug('Key can now be used to protect messages');
 }
 
+/**
+ * Encrypt a message using a prepared security key
+ */
 async function handleProtectMessage() {
   const authCredential = await navigator.credentials.get({
     publicKey: {
