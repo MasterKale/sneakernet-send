@@ -165,12 +165,11 @@ async function handleProtectMessage() {
   // FYI it's not a secret so you don't have to protect it.
   const nonce = crypto.getRandomValues(new Uint8Array(12));
 
-  const data = elemMessage.textContent ?? '';
+  const data = elemMessage.value ?? '';
   const encrypted = await crypto.subtle.encrypt(
     { name: 'AES-GCM', iv: nonce },
     encryptionKey,
-    // textEncoder.encode('hello readers 🥳')
-    data,
+    textEncoder.encode(data),
   );
 
   const b64urlEncrypted = bufferToBase64URLString(encrypted);
