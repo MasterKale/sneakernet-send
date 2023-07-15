@@ -119,7 +119,7 @@ async function handlePrepareKey() {
 
   if (!extResults.prf?.enabled) {
     writeToDebug(`extResults: ${JSON.stringify(extResults)}`);
-    const message = 'The authenticator could not be prepared.';
+    const message = 'The key could not be prepared.';
     writeToDebug(message);
     throw Error(message);
   }
@@ -145,7 +145,7 @@ async function handleProtectMessage() {
   const extResults = authCredential.getClientExtensionResults();
 
   if (!extResults.prf?.results?.first) {
-    const message = 'The authenticator could not be used to protect this message. Try preparing it?';
+    const message = 'The key could not be used to protect this message. Try preparing it?';
     writeToDebug(`extResults: ${JSON.stringify(extResults)}`);
     writeToDebug(message);
     throw Error(message);
@@ -240,7 +240,7 @@ async function handleReadMessage() {
 
     const toReturn = textDecoder.decode(decrypted);
 
-    writeToDebug(toReturn);
+    writeToDebug(`Original Message: ${toReturn}`);
   } catch (err) {
     console.error(err);
     writeToDebug(err);
