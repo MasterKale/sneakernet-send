@@ -93,16 +93,13 @@ async function handlePrepareKey() {
   const regCredential = await navigator.credentials.create({
     publicKey: {
       challenge: getRandomBytes(),
-      rp: {
-        name: 'Project Figbar',
-      },
+      rp: { name: 'Project Figbar' },
       user: {
         id: userID,
         name: userName,
         displayName: userName,
       },
       pubKeyCredParams: [
-        { alg: -8, type: 'public-key' }, // Ed25519
         { alg: -7, type: 'public-key' }, // ES256
         { alg: -257, type: 'public-key' }, // RS256
       ],
