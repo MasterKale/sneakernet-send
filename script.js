@@ -3,8 +3,6 @@ const elemDebugConsole = document.getElementById('debug');
 const textEncoder = new TextEncoder();
 const textDecoder = new TextDecoder();
 
-const rpID = 'localhost';
-
 // `salt` can be static for your site or unique per credential depending on your needs.
 // crypto.getRandomValues(new Uint8Array(new Array(32)));
 const firstSalt = new Uint8Array([
@@ -97,7 +95,6 @@ async function handlePrepareKey() {
       challenge: getRandomBytes(),
       rp: {
         name: 'Project Figbar',
-        id: rpID,
       },
       user: {
         id: userID,
@@ -140,7 +137,6 @@ async function handleProtectMessage() {
   const authCredential = await navigator.credentials.get({
     publicKey: {
       challenge: getRandomBytes(),
-      rpId: 'localhost',
       userVerification: 'required',
       extensions: {
         prf: { eval: { first: firstSalt } },
