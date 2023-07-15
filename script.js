@@ -15,6 +15,7 @@ const firstSalt = new Uint8Array([
 
 document.getElementById('btnPrepare').addEventListener('click', handlePrepareKey);
 document.getElementById('btnProtect').addEventListener('click', handleProtectMessage);
+document.getElementById('btnRead').addEventListener('click', handleReadMessage);
 
 /**
  *
@@ -179,4 +180,77 @@ async function handleProtectMessage() {
   const toReturn = `${b64urlEncrypted}:${b64urlNonce}:${b64urlCredentialID}`;
 
   writeToDebug(toReturn);
+}
+
+async function handleReadMessage() {
+  const message = elemMessage.value ?? '';
+
+  const messageParts = message.split(':');
+
+  if (messageParts.length < 2) {
+    const message = 'The protected message is not in the expected format';
+    writeToDebug(message);
+    throw new Error(message);
+  }
+
+  const [
+    b64urlEncrypted,
+    b64urlNonce,
+    credentialID,
+  ] = messageParts;
+
+  console.log({
+    b64urlEncrypted,
+    b64urlNonce,
+    credentialID,
+  });
+
+  const authOptions = {
+    publicKey: {
+      challenge: getRandomBytes(),
+      rpId: 'localhost',
+      userVerification: 'required',
+      extensions: {
+        prf: { eval: { first: firstSalt } },
+      },
+      allowCredentials: undefined,
+    },
+  };
+
+  // Provide a hint as to which authenticator would be usable to decrypt the message
+  if (credentialID) {
+    authOptions.publicKey.allowCredentials = [
+      { id: base64URLStringToBuffer(credentialID), type: 'public-key' },
+    ];
+  }
+
+  const authCredential = await navigator.credentials.get(authOptions);
+
+  // Hoping for `{ prf: { results: { first: Uint8Array } } },`
+  const extResults = authCredential.getClientExtensionResults();
+
+  if (!extResults.prf?.results?.first) {
+    const message = 'The authenticator could not be used to read this message.';
+    writeToDebug(`extResults: ${JSON.stringify(extResults)}`);
+    writeToDebug(message);
+    throw Error(message);
+  }
+
+  const inputKeyMaterial = new Uint8Array(extResults.prf.results.first);
+  const encryptionKey = await deriveEncryptionKey(inputKeyMaterial);
+
+  try {
+    const decrypted = await crypto.subtle.decrypt(
+      { name: "AES-GCM", iv: base64URLStringToBuffer(b64urlNonce) },
+      encryptionKey,
+      base64URLStringToBuffer(b64urlEncrypted)
+    );
+
+    const toReturn = textDecoder.decode(decrypted);
+
+    writeToDebug(toReturn);
+  } catch (err) {
+    console.error(err);
+    writeToDebug(err);
+  }
 }
