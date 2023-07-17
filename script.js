@@ -204,7 +204,9 @@ async function handleProtectMessage() {
  * Decrypt a protected message using a prepared security key
  */
 async function handleReadMessage() {
-  const message = elemMessage.value ?? '';
+  let message = elemMessage.value ?? '';
+  // Normalize the message a bit
+  message = message.trim();
 
   const messageParts = message.split(':');
 
