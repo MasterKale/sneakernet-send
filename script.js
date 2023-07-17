@@ -93,7 +93,7 @@ async function deriveEncryptionKey(inputKeyMaterial) {
  */
 async function handlePrepareKey() {
   const userID = getRandomBytes();
-  const userName = `Figbar Key (${Date.now()})`;
+  const userName = `WebAuthn username: "Figbar Key (${Date.now()})"`;
 
   writeToDebug(userName);
 
