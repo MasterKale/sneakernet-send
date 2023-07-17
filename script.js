@@ -1,6 +1,7 @@
 const elemMessage = document.getElementById('message');
 const elemDebugContainer = document.querySelector('#debug');
 const elemDebugConsole = document.querySelector('#debug p');
+const elemOutput = document.querySelector('#output p');
 
 const textEncoder = new TextEncoder();
 const textDecoder = new TextDecoder();
@@ -32,6 +33,15 @@ document.addEventListener('keyup', handleDocumentKeyUp);
  */
 function writeToDebug(text) {
   elemDebugConsole.innerHTML = elemDebugConsole.innerHTML + `<br>\[${Date.now()}\] ${text}`;
+}
+
+/**
+ * Display text that outputs from a protect or read operation
+ *
+ * @param {string} text
+ */
+function writeToOutput(text) {
+  elemOutput.innerText = text;
 }
 
 /**
@@ -183,6 +193,7 @@ async function handleProtectMessage() {
     const toReturn = `${b64urlEncrypted}:${b64urlNonce}:${b64urlCredentialID}`;
 
     writeToDebug(`Protected Message: ${toReturn}`);
+    writeToOutput(toReturn.trim());
   } catch (err) {
     console.error(err);
     writeToDebug(err);
@@ -256,6 +267,7 @@ async function handleReadMessage() {
     const toReturn = textDecoder.decode(decrypted);
 
     writeToDebug(`Original Message: ${toReturn}`);
+    writeToOutput(toReturn);
   } catch (err) {
     console.error(err);
     writeToDebug(err);
