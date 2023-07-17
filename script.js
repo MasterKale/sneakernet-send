@@ -126,12 +126,17 @@ async function handlePrepareKey() {
 
   if (!extResults.prf?.enabled) {
     writeToDebug(`extResults: ${JSON.stringify(extResults)}`);
-    const message = 'The key could not be prepared.';
+    const message = 'Your current OS, browser, and security key combination cannot be used with this site.';
     writeToDebug(message);
+    alert(message);
     throw Error(message);
   }
 
-  writeToDebug('Key can now be used to protect messages');
+  const message = 'Your security key can now be used to protect messages with this site.';
+  writeToDebug(message);
+  alert(message);
+
+  handleCloseFirstTime();
 }
 
 /**
