@@ -24,9 +24,21 @@
 
       button {
         padding: 8px;
+        font-family: inherit;
+        font-weight: bold;
       }
 
-      #container {
+      header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+      }
+
+      header h1 {
+        flex: 1;
+      }
+
+      .container {
         max-width: 500px;
         margin: 0 auto;
       }
@@ -34,11 +46,29 @@
       #debug {
         overflow-wrap: break-word;
       }
+
+      #dialogFirstTime {
+        max-width: 400px;
+        width: 95%;
+      }
+
+      #dialogFirstTime h2 {
+        flex: 1;
+      }
+
+      #btnPrepare {
+        margin: 0 auto;
+      }
     </style>
   </head>
   <body>
-    <div id="container">
-      <h1>Project Figbar</h1>
+    <div class="container">
+      <header>
+        <h1>Project Figbar</h1>
+        <p>
+          <button id="btnShowFirstTime">First time here?</button>
+        </p>
+      </header>
       <!-- Protect / Read Message -->
       <section>
         <textarea
@@ -53,18 +83,43 @@
           <button id="btnRead">Read Message</button>
         </p>
       </section>
-      <!-- Set up authenticator to protect -->
-      <section>
-        <h2>First time here?</h2>
-        <p>
-          <button id="btnPrepare">Prepare Key</button>
-        </p>
-      </section>
       <section>
         <h2>Debug Console</h2>
         <p id="debug"></p>
       </section>
     </div>
+    <!-- Set up authenticator to protect -->
+    <dialog id="dialogFirstTime">
+      <div class="container">
+        <header>
+          <h2>First time here?</h2>
+          <p>
+            <button id="btnCloseFirstTime">Close</button>
+          </p>
+        </header>
+        <p>
+          This site uses
+          <a href="https://w3c.github.io/webauthn/#prf-extension" target="_blank">
+            WebAuthn's "prf" extension
+          </a>
+          to perform end-to-end encryption, entirely in the browser, of the message you want to
+          protect. <strong>No data leaves the device.</strong>
+        </p>
+        <p>
+          You will need an OS and browser that supports the "prf" extension, as well as an
+          authenticator that supports the CTAP2 "hmac-secret" extension. For best results (as of
+          mid-2023) try <strong>macOS Chrome 114</strong> with the "Experimental Web Platform
+          features" flag enabled, and a recent <strong>FIDO2 security key</strong>. OS, browser, and
+          authenticator support is subject to change.
+        </p>
+        <p>
+          When you're ready, click the button below to set up your <strong>security key</strong>:
+        </p>
+        <p>
+          <button id="btnPrepare">Prepare Security Key</button>
+        </p>
+      </div>
+    </dialog>
     <script src="./helpers.js"></script>
     <script src="./script.js"></script>
   </body>

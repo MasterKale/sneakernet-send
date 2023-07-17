@@ -1,5 +1,7 @@
 const elemMessage = document.getElementById('message');
 const elemDebugConsole = document.getElementById('debug');
+const dialogFirstTime = document.getElementById('dialogFirstTime');
+
 const textEncoder = new TextEncoder();
 const textDecoder = new TextDecoder();
 
@@ -14,6 +16,8 @@ const firstSalt = new Uint8Array([
 document.getElementById('btnPrepare').addEventListener('click', handlePrepareKey);
 document.getElementById('btnProtect').addEventListener('click', handleProtectMessage);
 document.getElementById('btnRead').addEventListener('click', handleReadMessage);
+document.getElementById('btnShowFirstTime').addEventListener('click', handleShowFirstTime);
+document.getElementById('btnCloseFirstTime').addEventListener('click', handleCloseFirstTime);
 
 /**
  *
@@ -251,4 +255,15 @@ async function handleReadMessage() {
     console.error(err);
     writeToDebug(err);
   }
+}
+
+/**
+ * Show informational modal for setting up a key
+ */
+async function handleShowFirstTime() {
+  dialogFirstTime.showModal();
+}
+
+async function handleCloseFirstTime() {
+  dialogFirstTime.close();
 }
