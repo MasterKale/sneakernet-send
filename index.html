@@ -38,12 +38,16 @@
         flex: 1;
       }
 
+      .hide {
+        display: none;
+      }
+
       .container {
         max-width: 500px;
         margin: 0 auto;
       }
 
-      #debug {
+      #debug p {
         overflow-wrap: break-word;
       }
 
@@ -59,6 +63,20 @@
       #btnPrepare {
         margin: 0 auto;
       }
+
+      #controls {
+        display: flex;
+      }
+
+      #controls button {
+        width: 100%;
+      }
+
+      #controls p {
+        flex: 1;
+        text-align: center;
+        padding: 0 8px;
+      }
     </style>
   </head>
   <body>
@@ -69,8 +87,9 @@
           <button id="btnShowFirstTime">First time here?</button>
         </p>
       </header>
-      <!-- Protect / Read Message -->
-      <section>
+
+      <!-- Main interface -->
+      <main>
         <textarea
           name="message"
           id="message"
@@ -78,17 +97,30 @@
           rows="15"
           placeholder="Enter text that you want to protect, or protected text that you want to read"
         ></textarea>
-        <p>
-          <button id="btnProtect">Protect Message</button>
-          <button id="btnRead">Read Message</button>
-        </p>
-      </section>
-      <section>
+        <section id="controls">
+          <p>
+            <button id="btnProtect">Protect Message</button>
+            <br>
+            <br>
+            Enter your private message into the box above then encrypt it.
+          </p>
+          <p>
+            <button id="btnRead">Read Message</button>
+            <br>
+            <br>
+            Enter an encrypted message into the box above then decrypt it.
+          </p>
+        </section>
+      </main>
+
+      <!-- Debugger output, press Ctrl + Shift + D to toggle visibility -->
+      <section id="debug" class="hide">
         <h2>Debug Console</h2>
-        <p id="debug"></p>
+        <p></p>
       </section>
     </div>
-    <!-- Set up authenticator to protect -->
+
+    <!-- Informational dialog for first-timers -->
     <dialog id="dialogFirstTime">
       <div class="container">
         <header>

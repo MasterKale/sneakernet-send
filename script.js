@@ -1,5 +1,6 @@
 const elemMessage = document.getElementById('message');
-const elemDebugConsole = document.getElementById('debug');
+const elemDebugContainer = document.querySelector('#debug');
+const elemDebugConsole = document.querySelector('#debug p');
 const dialogFirstTime = document.getElementById('dialogFirstTime');
 
 const textEncoder = new TextEncoder();
@@ -13,11 +14,13 @@ const firstSalt = new Uint8Array([
   0x8a, 0x18, 0x10, 0xc0, 0x0f, 0x26, 0xbe, 0x1e,
 ]).buffer;
 
+// Event handlers
 document.getElementById('btnPrepare').addEventListener('click', handlePrepareKey);
 document.getElementById('btnProtect').addEventListener('click', handleProtectMessage);
 document.getElementById('btnRead').addEventListener('click', handleReadMessage);
 document.getElementById('btnShowFirstTime').addEventListener('click', handleShowFirstTime);
 document.getElementById('btnCloseFirstTime').addEventListener('click', handleCloseFirstTime);
+document.addEventListener('keyup', handleDocumentKeyUp);
 
 /**
  *
@@ -266,4 +269,19 @@ async function handleShowFirstTime() {
 
 async function handleCloseFirstTime() {
   dialogFirstTime.close();
+}
+
+/**
+ * Handle keypresses for shortcut configuration
+ * @param {KeyboardEvent} event
+ */
+function handleDocumentKeyUp(event) {
+  // Toggle debug console visibility
+  if (event.ctrlKey && event.shiftKey && event.key === 'D') {
+    if (elemDebugContainer.classList.contains('hide')) {
+      elemDebugContainer.classList.remove('hide');
+    } else {
+      elemDebugContainer.classList.add('hide');
+    }
+  }
 }
