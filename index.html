@@ -85,8 +85,9 @@
       }
 
       #faqs details {
-        outline: 1px dashed;
+        outline: 1px solid;
         padding: 0.5em;
+        margin-bottom: 1em;
       }
 
       #faqs details summary {
@@ -176,6 +177,32 @@
           </p>
           <p>
             <button id="btnPrepare">Prepare Security Key</button>
+          </p>
+        </details>
+
+        <details>
+          <summary>How does this work?</summary>
+          <p>
+            If you want to dive into the technical weeds then check out this
+            blog post of mine where I explore the "prf" extension and how it can
+            be used for symmetric encryption key derivation:
+            <br />
+            <br />
+            <a
+              href="https://blog.millerti.me/2023/01/22/encrypting-data-in-the-browser-using-webauthn/"
+              target="_blank"
+            >
+              https://blog.millerti.me/2023/01/22/encrypting-data-in-the-browser-using-webauthn/
+            </a>
+          </p>
+        </details>
+
+        <details>
+          <summary>How do I know you're not reading my messages?</summary>
+          <p>
+            Open your browser's dev tools and check out the
+            <strong>Network</strong> tab, you'll see no outbound network
+            requests occur at any time.
           </p>
         </details>
       </section>
