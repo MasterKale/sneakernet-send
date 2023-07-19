@@ -164,9 +164,10 @@ async function handleProtectMessage() {
   const extResults = authCredential.getClientExtensionResults();
 
   if (!extResults.prf?.results?.first) {
-    const message = 'The key could not be used to protect this message. Try preparing it?';
+    const message = 'The security key could not be used to protect this message. Try preparing it?';
     writeToDebug(`extResults: ${JSON.stringify(extResults)}`);
     writeToDebug(message);
+    writeToOutput(`Error: ${message}`);
     throw Error(message);
   }
 
@@ -197,6 +198,7 @@ async function handleProtectMessage() {
   } catch (err) {
     console.error(err);
     writeToDebug(err);
+    writeToOutput(`Error: ${err}`);
   }
 }
 
@@ -249,9 +251,10 @@ async function handleReadMessage() {
   const extResults = authCredential.getClientExtensionResults();
 
   if (!extResults.prf?.results?.first) {
-    const message = 'The authenticator could not be used to read this message.';
+    const message = 'The security key could not be used to read this message.';
     writeToDebug(`extResults: ${JSON.stringify(extResults)}`);
     writeToDebug(message);
+    writeToOutput(`Error: ${message}`);
     throw Error(message);
   }
 
@@ -273,6 +276,7 @@ async function handleReadMessage() {
   } catch (err) {
     console.error(err);
     writeToDebug(err);
+    writeToOutput(`Error: ${err}`);
   }
 }
 
