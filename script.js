@@ -229,7 +229,6 @@ async function handleReadMessage() {
   const authOptions = {
     publicKey: {
       challenge: getRandomBytes(),
-      rpId: 'localhost',
       userVerification: 'required',
       extensions: {
         prf: { eval: { first: firstSalt } },
