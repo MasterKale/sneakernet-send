@@ -15,7 +15,7 @@ https://blog.millerti.me/2023/01/22/encrypting-data-in-the-browser-using-webauth
 
 ## Requirements
 
-- `python3 -m http.server` (
+- `python3 -m http.server`
   - Or whatever you want to use to host it locally, doesn't matter so long as it's available locally at http://localhost:8000 (other ports are fine too)
 
 ## Demo
