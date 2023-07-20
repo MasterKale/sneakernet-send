@@ -88,15 +88,21 @@
         padding: 0 0.5em;
       }
 
-      #faqs details {
-        outline: 1px solid;
-        padding: 0.5em;
-        margin-bottom: 1em;
-      }
-
       #faqs details summary {
         cursor: pointer;
         font-weight: bold;
+      }
+
+      #faqs h3 {
+        text-transform: uppercase;
+        text-decoration: underline;
+        color: var(--sneaker);
+      }
+
+      #faqs section {
+        outline: 1px solid;
+        padding: 0.5em;
+        margin-bottom: 1em;
       }
 
       #output p {
@@ -114,6 +120,10 @@
 
       #dialogFirstTime h2 {
         flex: 1;
+      }
+
+      #faqs-title {
+        display: inline-block;
       }
 
       .example {
@@ -171,93 +181,98 @@
 
       <!-- FAQs -->
       <section id="faqs">
-        <h2>FAQs</h2>
+        <details open>
+          <summary>
+            <h2 id="faqs-title">FAQs</h2>
+          </summary>
+          <!-- How do I protect a message? -->
+          <section>
+            <h3>How do I protect a message?</h3>
+            <p>
+              If this is your first time here, configure your security key (see
+              <strong>"First time here?"</strong> above) before proceeding:
+            </p>
+            <ol>
+              <li>
+                <strong>Type your message</strong> into the text box at the top
+                of the page.
+              </li>
+              <li>Click the <strong>Protect Message</strong> button above.</li>
+              <li>
+                <strong>Complete the WebAuthn authentication</strong> with the
+                security key you prepared earlier.
+              </li>
+              <li>
+                <strong>Copy the encrypted text</strong> that appears in the
+                <strong>Output</strong> box.
+              </li>
+              <li>
+                <strong>Send your encrypted message and security key</strong> to
+                the intended recipient however you want (but not together.)
+              </li>
+            </ol>
+            <p>A protected message will look like this:</p>
+            <p class="example">
+              hx8n0vIjRG_LhHzkrr83icFjvv45K3zyN3MqKl_Q9UUWCn8x8CzEIHt5:PnZ4Q2GYaP9qyXS-:V776nkChBS2U1RU0-NtpMVYjLPN-NjfDIsc1oMH4p-gJ1SflxDBS6dcK4qy0ZcSq
+            </p>
+            <p>
+              Protected messages are encrypted using AES-256-GCM encryption.
+            </p>
+            <p>
+              <strong>
+                Only the recipient of both the protected message and the
+                security key can read a protected message!
+              </strong>
+            </p>
+          </section>
 
-        <!-- How do I protect a message? -->
-        <details>
-          <summary>How do I protect a message?</summary>
-          <p>
-            If this is your first time here, configure your security key (see
-            <strong>"First time here?"</strong> above) before proceeding:
-          </p>
-          <ol>
-            <li>
-              <strong>Type your message</strong> into the text box at the top of
-              the page.
-            </li>
-            <li>Click the <strong>Protect Message</strong> button above.</li>
-            <li>
-              <strong>Complete the WebAuthn authentication</strong> with the
-              security key you prepared earlier.
-            </li>
-            <li>
-              <strong>Copy the encrypted text</strong> that appears in the
-              <strong>Output</strong> box.
-            </li>
-            <li>
-              <strong>Send your encrypted message and security key</strong> to
-              the intended recipient however you want (but not together.)
-            </li>
-          </ol>
-          <p>A protected message will look like this:</p>
-          <p class="example">
-            hx8n0vIjRG_LhHzkrr83icFjvv45K3zyN3MqKl_Q9UUWCn8x8CzEIHt5:PnZ4Q2GYaP9qyXS-:V776nkChBS2U1RU0-NtpMVYjLPN-NjfDIsc1oMH4p-gJ1SflxDBS6dcK4qy0ZcSq
-          </p>
-          <p>Protected messages are encrypted using AES-256-GCM encryption.</p>
-          <p>
-            <strong>
-              Only the recipient of both the protected message and the security
-              key can read a protected message!
-            </strong>
-          </p>
-        </details>
+          <!-- How do I read a protected message? -->
+          <section>
+            <h3>How do I read a protected message?</h3>
+            <ol>
+              <li>
+                <strong>Paste the protected message</strong> into the text box
+                at the top of the page.
+              </li>
+              <li>Click the <strong>Read Message</strong> button above.</li>
+              <li>
+                <strong>Complete the WebAuthn authentication</strong> with the
+                security key that was used to protect the message.
+              </li>
+              <li>
+                <strong>Read the original message</strong> that appears in the
+                <strong>Output</strong> box.
+              </li>
+            </ol>
+          </section>
 
-        <!-- How do I read a protected message? -->
-        <details>
-          <summary>How do I read a protected message?</summary>
-          <ol>
-            <li>
-              <strong>Paste the protected message</strong> into the text box at
-              the top of the page.
-            </li>
-            <li>Click the <strong>Read Message</strong> button above.</li>
-            <li>
-              <strong>Complete the WebAuthn authentication</strong> with the
-              security key that was used to protect the message.
-            </li>
-            <li>
-              <strong>Read the original message</strong> that appears in the
-              <strong>Output</strong> box.
-            </li>
-          </ol>
-        </details>
+          <!-- How does this work? -->
+          <section>
+            <h3>What is going on behind the scenes?</h3>
+            <p>
+              If you want to dive into the technical weeds then check out this
+              blog post of mine where I explore the "prf" extension and how it
+              can be used for symmetric encryption key derivation:
+              <br />
+              <br />
+              <a
+                href="https://blog.millerti.me/2023/01/22/encrypting-data-in-the-browser-using-webauthn/"
+                target="_blank"
+              >
+                https://blog.millerti.me/2023/01/22/encrypting-data-in-the-browser-using-webauthn/
+              </a>
+            </p>
+          </section>
 
-        <!-- How does this work? -->
-        <details>
-          <summary>What is going on behind the scenes?</summary>
-          <p>
-            If you want to dive into the technical weeds then check out this
-            blog post of mine where I explore the "prf" extension and how it can
-            be used for symmetric encryption key derivation:
-            <br />
-            <br />
-            <a
-              href="https://blog.millerti.me/2023/01/22/encrypting-data-in-the-browser-using-webauthn/"
-              target="_blank"
-            >
-              https://blog.millerti.me/2023/01/22/encrypting-data-in-the-browser-using-webauthn/
-            </a>
-          </p>
-        </details>
-
-        <!-- Are you reading my messages? -->
-        <details>
-          <summary>How do I know you're not reading my messages?</summary>
-          <p>
-            Open your browser's dev tools and check out the
-            <strong>Network</strong> tab, you'll see no outbound network
-            requests occur at any time.
-          </p>
+          <!-- Are you reading my messages? -->
+          <section>
+            <h3>How do I know you're not reading my messages?</h3>
+            <p>
+              Open your browser's dev tools and check out the
+              <strong>Network</strong> tab, you'll see no outbound network
+              requests occur at any time.
+            </p>
+          </section>
         </details>
       </section>
 
