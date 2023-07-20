@@ -15,6 +15,7 @@ const firstSalt = new Uint8Array([
 ]).buffer;
 
 // Event handlers
+elemMessage.addEventListener('input', handleMessageChange);
 document.getElementById('btnPrepare').addEventListener('click', handlePrepareKey);
 document.getElementById('btnProtect').addEventListener('click', handleProtectMessage);
 document.getElementById('btnRead').addEventListener('click', handleReadMessage);
@@ -53,6 +54,17 @@ function writeToOutput(text) {
 function getRandomBytes(length = 16) {
   const arrayBuffer = new Uint8Array(new Array(length));
   return crypto.getRandomValues(arrayBuffer);
+}
+
+/**
+ * Show or hide the debug console, opposite of its current visibility
+ */
+function toggleDebugConsoleVisibility() {
+  if (elemDebugContainer.classList.contains('hide')) {
+    elemDebugContainer.classList.remove('hide');
+  } else {
+    elemDebugContainer.classList.add('hide');
+  }
 }
 
 /**
@@ -280,16 +292,22 @@ async function handleReadMessage() {
 }
 
 /**
- * Handle keypresses for shortcut configuration
+ * Handle global keypresses for shortcut configuration
  * @param {KeyboardEvent} event
  */
 function handleDocumentKeyUp(event) {
   // Toggle debug console visibility
   if (event.ctrlKey && event.shiftKey && event.key === 'D') {
-    if (elemDebugContainer.classList.contains('hide')) {
-      elemDebugContainer.classList.remove('hide');
-    } else {
-      elemDebugContainer.classList.add('hide');
-    }
+    toggleDebugConsoleVisibility()
+  }
+}
+/**
+ * Support use of typing the toolbox emoji to reveal the debug console (for mobile)
+ * @param {Event} event
+ */
+function handleMessageChange(event) {
+  // Toggle debug console visibility
+  if (event.data === '🧰') {
+    toggleDebugConsoleVisibility();
   }
 }
