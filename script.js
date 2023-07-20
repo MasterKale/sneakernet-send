@@ -2,6 +2,7 @@ const elemMessage = document.getElementById('message');
 const elemDebugContainer = document.querySelector('#debug');
 const elemDebugConsole = document.querySelector('#debug p');
 const elemOutput = document.querySelector('#output p');
+const dialogFirstTime = document.getElementById('dialogFirstTime');
 
 const textEncoder = new TextEncoder();
 const textDecoder = new TextDecoder();
@@ -19,6 +20,8 @@ elemMessage.addEventListener('input', handleMessageChange);
 document.getElementById('btnPrepare').addEventListener('click', handlePrepareKey);
 document.getElementById('btnProtect').addEventListener('click', handleProtectMessage);
 document.getElementById('btnRead').addEventListener('click', handleReadMessage);
+document.getElementById('btnShowFirstTime').addEventListener('click', handleShowFirstTime);
+document.getElementById('btnCloseFirstTime').addEventListener('click', handleCloseFirstTime);
 document.addEventListener('keyup', handleDocumentKeyUp);
 
 /**
@@ -310,4 +313,15 @@ function handleMessageChange(event) {
   if (event.data === '🧰') {
     toggleDebugConsoleVisibility();
   }
+}
+
+/**
+ * Show informational modal for setting up a key
+ */
+async function handleShowFirstTime() {
+  dialogFirstTime.showModal();
+}
+
+async function handleCloseFirstTime() {
+  dialogFirstTime.close();
 }

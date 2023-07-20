@@ -107,6 +107,15 @@
         background-color: var(--light-1);
       }
 
+      #dialogFirstTime {
+        max-width: 400px;
+        width: 95%;
+      }
+
+      #dialogFirstTime h2 {
+        flex: 1;
+      }
+
       .example {
         word-wrap: break-word;
         color: var(--dark-1);
@@ -119,6 +128,9 @@
     <div class="container">
       <header>
         <h1>Project Fig Bar</h1>
+        <p>
+          <button id="btnShowFirstTime">First time here?</button>
+        </p>
       </header>
 
       <!-- Main interface -->
@@ -160,39 +172,6 @@
       <!-- FAQs -->
       <section id="faqs">
         <h2>FAQs</h2>
-
-        <!-- First time here? -->
-        <details>
-          <summary>First time here?</summary>
-          <p>
-            This site uses
-            <a
-              href="https://w3c.github.io/webauthn/#prf-extension"
-              target="_blank"
-            >
-              WebAuthn's "prf" extension
-            </a>
-            to perform end-to-end encryption, entirely in the browser, of the
-            message you want to protect.
-            <strong>No data leaves the browser.</strong>
-          </p>
-          <p>
-            You will need an OS and browser that supports the "prf" extension,
-            as well as an authenticator that supports the CTAP2 "hmac-secret"
-            extension. For best results (as of mid-2023) try
-            <strong>macOS Chrome 114</strong> with the "Experimental Web
-            Platform features" flag enabled, and a recent
-            <strong>FIDO2 security key</strong>. OS, browser, and authenticator
-            support is subject to change.
-          </p>
-          <p>
-            When you're ready, click the button below to set up your
-            <strong>security key</strong>:
-          </p>
-          <p>
-            <button id="btnPrepare">Prepare Security Key</button>
-          </p>
-        </details>
 
         <!-- How do I protect a message? -->
         <details>
@@ -287,6 +266,47 @@
         reveal the debug console
       </footer>
     </div>
+
+    <dialog id="dialogFirstTime">
+      <div class="container">
+        <header>
+          <h2>First time here?</h2>
+          <p>
+            <button id="btnCloseFirstTime">Close</button>
+          </p>
+        </header>
+        <section>
+          <p>
+            This site uses
+            <a
+              href="https://w3c.github.io/webauthn/#prf-extension"
+              target="_blank"
+            >
+              WebAuthn's "prf" extension
+            </a>
+            to perform end-to-end encryption, entirely in the browser, of the
+            message you want to protect.
+            <strong>No data leaves the browser.</strong>
+          </p>
+          <p>
+            You will need an OS and browser that supports the "prf" extension,
+            as well as an authenticator that supports the CTAP2 "hmac-secret"
+            extension. For best results (as of mid-2023) try
+            <strong>macOS Chrome 114</strong> with the "Experimental Web
+            Platform features" flag enabled, and a recent
+            <strong>FIDO2 security key</strong>. OS, browser, and authenticator
+            support is subject to change.
+          </p>
+          <p>
+            When you're ready, click the button below to set up your
+            <strong>security key</strong>:
+          </p>
+          <p>
+            <button id="btnPrepare">Prepare Security Key</button>
+          </p>
+        </section>
+      </div>
+    </dialog>
 
     <!-- JavaScript -->
     <script src="./helpers.js"></script>
