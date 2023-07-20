@@ -232,6 +232,7 @@ async function handleReadMessage() {
   if (messageParts.length < 2) {
     const message = 'The protected message is not in the expected format';
     writeToDebug(message);
+    writeToOutput(`Error: ${message}`);
     throw new Error(message);
   }
 
