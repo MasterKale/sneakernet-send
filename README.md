@@ -1,4 +1,4 @@
-# Project Fig Bar
+# Sneakernet Send 👟
 
 What might an E2EE message protection system, backed by WebAuthn + `prf` extension, look like if it
 were user-friendly?
