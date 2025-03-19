@@ -115,7 +115,12 @@ async function deriveEncryptionKey(inputKeyMaterial) {
  */
 async function handlePrepareKey() {
   const userID = getRandomBytes();
-  const userName = `Sneakernet Send (${Date.now()})`;
+
+  // Grab the last six alphanumeric characters from the base64url string
+  const userIDB64URL = bufferToBase64URLString(userID);
+  const userIDShort = userIDB64URL.replaceAll(/[_-]/gi, '').slice(-6).toUpperCase();
+  // Create a generic username with the shorter identifier
+  const userName = `Sneakernet Send (${userIDShort})`;
 
   writeToDebug(`WebAuthn user.name: "${userName}"`);
 
