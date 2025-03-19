@@ -135,11 +135,11 @@ async function handlePrepareKey() {
       authenticatorSelection: {
         userVerification: 'required',
         residentKey: 'required',
-        authenticatorAttachment: 'cross-platform',
       },
       extensions: {
         prf: { eval: { first: firstSalt } },
       },
+      hints: ['security-key', 'client-device', 'hybrid']
     },
   });
 
