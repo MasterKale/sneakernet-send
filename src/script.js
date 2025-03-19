@@ -115,14 +115,19 @@ async function deriveEncryptionKey(inputKeyMaterial) {
  */
 async function handlePrepareKey() {
   const userID = getRandomBytes();
-  const userName = `WebAuthn username: "Figbar Key (${Date.now()})"`;
 
-  writeToDebug(userName);
+  // Grab the last six alphanumeric characters from the base64url string
+  const userIDB64URL = bufferToBase64URLString(userID);
+  const userIDShort = userIDB64URL.replaceAll(/[_-]/gi, '').slice(-6).toUpperCase();
+  // Create a generic username with the shorter identifier
+  const userName = `Sneakernet Send (${userIDShort})`;
+
+  writeToDebug(`WebAuthn user.name: "${userName}"`);
 
   const regCredential = await navigator.credentials.create({
     publicKey: {
       challenge: getRandomBytes(),
-      rp: { name: 'Project Figbar' },
+      rp: { name: 'Sneakernet Send' },
       user: {
         id: userID,
         name: userName,
@@ -135,8 +140,8 @@ async function handlePrepareKey() {
       authenticatorSelection: {
         userVerification: 'required',
         residentKey: 'required',
-        authenticatorAttachment: 'cross-platform',
       },
+      hints: ['security-key', 'client-device', 'hybrid'],
       extensions: {
         prf: { eval: { first: firstSalt } },
       },
