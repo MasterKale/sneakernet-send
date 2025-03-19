@@ -136,10 +136,10 @@ async function handlePrepareKey() {
         userVerification: 'required',
         residentKey: 'required',
       },
+      hints: ['security-key', 'client-device', 'hybrid'],
       extensions: {
         prf: { eval: { first: firstSalt } },
       },
-      hints: ['security-key', 'client-device', 'hybrid']
     },
   });
 
