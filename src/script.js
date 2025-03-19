@@ -115,14 +115,14 @@ async function deriveEncryptionKey(inputKeyMaterial) {
  */
 async function handlePrepareKey() {
   const userID = getRandomBytes();
-  const userName = `WebAuthn username: "Figbar Key (${Date.now()})"`;
+  const userName = `Sneakernet Send (${Date.now()})`;
 
-  writeToDebug(userName);
+  writeToDebug(`WebAuthn user.name: "${userName}"`);
 
   const regCredential = await navigator.credentials.create({
     publicKey: {
       challenge: getRandomBytes(),
-      rp: { name: 'Project Figbar' },
+      rp: { name: 'Sneakernet Send' },
       user: {
         id: userID,
         name: userName,
